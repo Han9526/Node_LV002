@@ -11,10 +11,12 @@ require('dotenv').config();
 router.post('/signin', async (req, res) => {
   const { email, password } = req.body;
   const user = await Users.findOne({ where: { email } });
-  const passwordMatch = await bcrypt.compare(password, user.password);
   if (!user) {
     return res.status(401).json({ message: '존재하지 않는 이메일입니다.' });
-  } else if (!passwordMatch) {
+  }
+
+  const passwordMatch = await bcrypt.compare(password, user.password);
+  if (!passwordMatch) {
     return res.status(401).json({ message: '비밀번호가 일치하지 않습니다.' });
   }
 
@@ -25,7 +27,7 @@ router.post('/signin', async (req, res) => {
     process.env.JWT_KEY,
     { expiresIn: '12h' }
   );
-  res.status(200).json({ accesstoken: accessToken });
+  res.status(200).json({ accessToken: accessToken });
 });
 
 // 내 정보 조회 API ( Middleware 사용)
