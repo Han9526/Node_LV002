@@ -14,18 +14,14 @@ router.post('/product', authMiddleware, async (req, res) => {
   if (productName === '' || productComments === '' || price === null) {
     return res.status(400).json({ error: '값을 입력하시오' });
   }
-  try {
-    const createdProduct = await Products.create({
-      productName,
-      productComments,
-      productQuantity,
-      price,
-      createdId: res.locals.user.userId,
-    });
-    res.json({ Product: createdProduct });
-  } catch (error) {
-    res.status(503).json({ error: error.message });
-  }
+  const createdProduct = await Products.create({
+    productName,
+    productComments,
+    productQuantity,
+    price,
+    createdId: res.locals.user.userId,
+  });
+  res.json({ Product: createdProduct });
 });
 // C created
 
@@ -45,11 +41,6 @@ router.get('/products', async (req, res) => {
 
 // // 상품 detail 조회
 // // 상품명, 작성 내용, 작성자명, 상품 상태, 작성 날짜 조회하기
-router.get('/product/', (req, res) => {
-  return res
-    .status(400)
-    .json({ message: '잘못된 접근입니다 ProductId를 입력하시오' });
-});
 router.get('/product/:productId', async (req, res) => {
   const { productId } = req.params;
   const productDetail = await Products.findOne({
@@ -115,9 +106,6 @@ router.patch('/product/:productId', async (req, res) => {
 
 // // D delete
 // destroy()
-router.delete('/product/', (req, res) => {
-  return res.status(400).json({ message: '잘못된 접근입니다 ' });
-});
 router.delete('/product/:productId', authMiddleware, async (req, res) => {
   const { productId } = req.params;
   const productDetail = await Products.findOne({
