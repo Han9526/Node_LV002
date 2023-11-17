@@ -6,7 +6,7 @@ const development = {
   password: env.DB_PASSWORD,
   database: env.DB_NAME,
   host: env.DB_HOST,
-  dialect: 'mysql',
+  dialect: env.DB_TYPE,
 };
 const test = {
   username: process.env.TEST_DB_USERNAME,

@@ -15,12 +15,12 @@ Content-Type: application/json
 ### 내정보 조회
 GET http://localhost:3000/api/signin/me
 Content-Type: application/json
-Authorization: Bearer {{getJWT.response.body.accesstoken}}
+Authorization: Bearer {{getJWT.response.body.accessToken}}
 
 ### CREATE 상품생성
 POST http://localhost:3000/api/product
 Content-Type: application/json
-Authorization: Bearer {{getJWT.response.body.accesstoken}}
+Authorization: Bearer {{getJWT.response.body.accessToken}}
 
 { "productName":"콜라32", "productComments":"제로입니다3", "price":202220 }
 
@@ -36,11 +36,11 @@ Content-Type: application/json
 ### UPDATE 상품 수정
 PATCH http://localhost:3000/api/product/15
 Content-Type: application/json
-Authorization: Bearer {{getJWT.response.body.accesstoken}}
+Authorization: Bearer {{getJWT.response.body.accessToken}}
 
 { "productName":"콜라23", "productComments":"제로입니다2", "price":2202220 }
 
 ### DELETE 상품 삭제
 DELETE http://localhost:3000/api/product/15
 Content-Type: application/json
-Authorization: Bearer {{getJWT.response.body.accesstoken}}
+Authorization: Bearer {{getJWT.response.body.accessToken}}
