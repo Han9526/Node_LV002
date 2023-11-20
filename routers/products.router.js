@@ -14,6 +14,12 @@ router.post('/product', authMiddleware, async (req, res) => {
   if (productName === '' || productComments === '' || price === null) {
     return res.status(400).json({ error: '값을 입력하시오' });
   }
+  const checkProduct = await Products.findOne({
+    where: { productName, productComments, price },
+  });
+  if (checkProduct) {
+    return res.status(400).json({ error: '이미 등록된 상품입니다' });
+  }
   const createdProduct = await Products.create({
     productName,
     productComments,
@@ -29,13 +35,29 @@ router.post('/product', authMiddleware, async (req, res) => {
 
 // // 상품 목록 조회
 router.get('/products', async (req, res) => {
+  let query = req.query.sort;
+  let Order;
+  if (!query) {
+    Order = 'DESC';
+  } else {
+    if (query.toUpperCase() === 'ASC') {
+      Order = 'ASC';
+    } else {
+      Order = 'DESC';
+    }
+  }
   const productList = await Products.findAll({
+    attributes: ['productId', 'productName', 'productComments', 'createdAt'],
     include: {
       model: Users,
       as: 'User',
       attributes: ['name'],
     },
+    order: [['createdAt', Order]],
   });
+  if (!productList) {
+    return res.status(404).json({ message: '등록된 상품이 없습니다' });
+  }
   res.send({ List: productList });
 });
 
@@ -47,21 +69,29 @@ router.get('/product/:productId', async (req, res) => {
     where: {
       productId: productId,
     },
+    attributes: [
+      'productId',
+      'productName',
+      'productComments',
+      'productStatus',
+      'createdAt',
+    ],
     include: {
       model: Users,
       as: 'User',
       attributes: ['name'],
     },
   });
+  if (!productDetail) {
+    return res.status(404).json({ message: '등록된 상품이 없습니다' });
+  }
   res.status(200).json({ detail: productDetail });
 });
 // // R Read
 
 // //  U Update
-router.patch('/product/', authMiddleware, (req, res) => {
-  return res.status(400).json({ message: '잘못된 접근입니다' });
-});
-router.patch('/product/:productId', async (req, res) => {
+
+router.patch('/product/:productId', authMiddleware, async (req, res) => {
   const { productId } = req.params;
   const productDetail = await Products.findOne({
     where: {
@@ -83,7 +113,7 @@ router.patch('/product/:productId', async (req, res) => {
     price = productDetail.price;
   }
 
-  if (res.locals.user.userId === productDetail.createdId) {
+  if (productDetail.createdId === res.locals.user.userId) {
     await Products.update(
       {
         productName: productName,
@@ -97,7 +127,7 @@ router.patch('/product/:productId', async (req, res) => {
         },
       }
     );
-    res.status(200).json({ message: '수정 성공적' });
+    res.status(200).json({ message: '상품이 성공적으로 수정됬습니다' });
   } else {
     return res.status(401).json({ message: '수정 할 권한이 없습니다' });
   }
@@ -118,7 +148,9 @@ router.delete('/product/:productId', authMiddleware, async (req, res) => {
   }
   if (productDetail.createdId === res.locals.user.userId) {
     productDetail.destroy();
-    return res.status(200).json({ message: '삭제가 성공적으로 이루어졌어' });
+    return res
+      .status(200)
+      .json({ message: '삭제가 성공적으로 이루어졌습니다' });
   } else {
     return res.status(401).json({ message: '삭제 할 권한이 없습니다' });
   }

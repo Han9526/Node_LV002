@@ -3,7 +3,7 @@
 POST http://localhost:3000/api/signup 
 Content-Type: application/json
 
-{ "password":"123456", "name":"hsj2", "email":"asd23@asdasd.asd" }
+{ "password":"123456", "name":"hsj2", "email":"asd233@asdasd.asd" }
 
 ### Sign-In
 # @name getJWT
@@ -22,25 +22,29 @@ POST http://localhost:3000/api/product
 Content-Type: application/json
 Authorization: Bearer {{getJWT.response.body.accessToken}}
 
-{ "productName":"콜라32", "productComments":"제로입니다3", "price":202220 }
+{ "productName":"콜라32", "productComments":"제로입니다3", "price":2202220 }
 
 ### READ 상품 목록 조회
 GET http://localhost:3000/api/products
 Content-Type: application/json
 
+### READ 상품 목록 과거순으로 조회
+GET http://localhost:3000/api/products?sort=AsC
+Content-Type: application/json
+
 ### READ 상품 상세 조회
-GET http://localhost:3000/api/product/17
+GET http://localhost:3000/api/product/21
 Content-Type: application/json
 
 
 ### UPDATE 상품 수정
-PATCH http://localhost:3000/api/product/15
+PATCH http://localhost:3000/api/product/19
 Content-Type: application/json
 Authorization: Bearer {{getJWT.response.body.accessToken}}
 
-{ "productName":"콜라23", "productComments":"제로입니다2", "price":2202220 }
+{ "productName":"콜라223", "productComments":"제로입니다2", "price":2202220 }
 
 ### DELETE 상품 삭제
-DELETE http://localhost:3000/api/product/15
+DELETE http://localhost:3000/api/product/3
 Content-Type: application/json
 Authorization: Bearer {{getJWT.response.body.accessToken}}

@@ -8,21 +8,9 @@
 - DB_NAME
 - DB_TYPE
 
-- TEST_DB_USERNAME
-- TEST_DB_PASSWORD
-- TEST_DB_DATABASE
-- TEST_DB_HOST
-- TEST_DB_DIALECT
-
-- PRODUCTION_DB_USERNAME
-- PRODUCTION_DB_PASSWORD
-- PRODUCTION_DB_DATABASE
-- PRODUCTION_DB_HOST
-- PRODUCTION_DB_DIALECT
-
 # API 명세서 URL
 
-- 구글 Docs 공유 URL 추가
+- https://docs.google.com/spreadsheets/d/1P1woqeGA-DHvjo_lDGmJCgJqr32BKIZOILXwpGbA0TA/edit?usp=sharing
 
 # ERD URL
 
@@ -93,6 +81,23 @@
 
 - MongoDB, Mongoose를 이용해 구현되었던 코드를 MySQL, Sequelize로 변경하면서,
   많은 코드 변경이 있었나요? 주로 어떤 코드에서 변경이 있었나요?
+
+  - 스키마 정의 하는 부분
+  - 메소드
+
+  ```
+  mongoose
+  Product.findOne({ productId: productId }
+  // ...
+  });
+    sequelize
+  Products.findOne({
+    where: {
+      productId: productId,
+    }
+
+  ```
+
 - 만약 이렇게 DB를 변경하는 경우가 또 발생했을 때, 코드 변경을 보다 쉽게 하려면
   어떻게 코드를 작성하면 좋을 지 생각나는 방식이 있나요? 있다면 작성해 주세요.
 
@@ -104,10 +109,17 @@
   재실행되지 않을 겁니다. AWS EC2 인스턴스가 재시작 된 후에도 자동으로 Express
   서버를 실행할 수 있게 하려면 어떤 조치를 취해야 할까요? (Hint: PM2에서
   제공하는 기능 중 하나입니다.)
+  - `pm2 startup`
 
 ## 7. **개발 환경**
 
 - nodemon은 어떤 역할을 하는 패키지이며, 사용했을 때 어떤 점이 달라졌나요?
+  - 코드를 변경 후 서버를 재시작 하지 않아도 저장만 해도 알아서 재시작이 되므로
+    편합니다
 - npm을 이용해서 패키지를 설치하는 방법은 크게 일반, 글로벌(`--global, -g`),
   개발용(`--save-dev, -D`)으로 3가지가 있습니다. 각각의 차이점을 설명하고,
   nodemon은 어떤 옵션으로 설치해야 될까요?
+  - 일반 프로젝트안에서만 패키지를 사용할 때
+  - 글로벌 시스템 전체에서 사용 가능한 패키지를 설치할 때
+  - 개발용 개발 환경에서만 필요한 패키지를 설치할 때
+  - nodemon은 개발 npm `install -D nodemon`
