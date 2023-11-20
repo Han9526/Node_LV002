@@ -8,6 +8,9 @@
 - DB_NAME
 - DB_TYPE
 
+- DB_PASSWORD_SALT_ROUNDS
+- PORT
+
 # API 명세서 URL
 
 - https://docs.google.com/spreadsheets/d/1P1woqeGA-DHvjo_lDGmJCgJqr32BKIZOILXwpGbA0TA/edit?usp=sharing
