@@ -1,6 +1,8 @@
-"use strict";
-const { Model } = require("sequelize");
-const bcrypt = require("bcrypt");
+'use strict';
+const { Model } = require('sequelize');
+const bcrypt = require('bcrypt');
+require('dotenv').config();
+const env = process.env;
 module.exports = (sequelize, DataTypes) => {
   class Users extends Model {
     /**
@@ -11,8 +13,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       this.hasOne(models.Products, {
-        sourceKey: "userId",
-        foreignKey: "createdId",
+        sourceKey: 'userId',
+        foreignKey: 'createdId',
       });
     }
   }
@@ -29,11 +31,14 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "Users",
+      modelName: 'Users',
     }
   );
   Users.beforeCreate(async (user, options) => {
-    const hashedPassword = await bcrypt.hash(user.password, 10);
+    const hashedPassword = await bcrypt.hash(
+      user.password,
+      env.DB_PASSWORD_SALT_ROUNDS
+    );
     user.password = hashedPassword;
   });
   return Users;
