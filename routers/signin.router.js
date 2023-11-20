@@ -12,11 +12,9 @@ router.post('/signin', async (req, res) => {
   const { email, password } = req.body;
   const user = await Users.findOne({ where: { email } });
   if (!user) {
-    return res
-      .status(401)
-      .json({
-        message: '존재하지 않는 유저입니다. 이메일을 다시 확인하십시오',
-      });
+    return res.status(401).json({
+      message: '존재하지 않는 유저입니다. 이메일을 다시 확인하십시오',
+    });
   }
 
   const passwordMatch = await bcrypt.compare(password, user.password);

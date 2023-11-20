@@ -16,10 +16,7 @@ if (config.use_env_variable) {
     config.database,
     config.username,
     config.password,
-    config,
-    {
-      dialect: 'mysql',
-    }
+    config
   );
 }
 
